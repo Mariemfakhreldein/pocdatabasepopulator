@@ -28,7 +28,7 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
 
     DataFactory df = new DataFactory();
 
-    private int subscribersCount = 100;
+    private int subscribersCount = 1000000;
     public static void main(String[] args) {
         SpringApplication.run(PocdatabasepopulatorApplication.class, args);
     }
@@ -39,6 +39,7 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
 
         List<Segment> segments  = new ArrayList<>();
 
+        long startTime = System.currentTimeMillis();
         //PROMO1
         PromotionDetails promotionDetails1 = new PromotionDetails();
         promotionDetails1.setName("PROMO1");
@@ -95,33 +96,39 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
         promotionDetails3.addSegment(segment33);
         segments.add(segment33);
 
-        promotionDetailsRepository.save(promotionDetails3);
+        promotionDetailsRepository.saveAndFlush(promotionDetails3);
+
 
 
         String msisdn = "1200000000";
+        List<SegmentSubscriber> segmentSubscribers = new ArrayList<>();
         //subscribers
-        for(int i = 0; i < subscribersCount ; ++i){
+        for(int i = 1; i <= subscribersCount ; ++i) {
 
             Subscriber subscriber = new Subscriber();
             subscriber.setName(df.getName());
             int promotionStatusSize = PromotionStatus.values().length;
-            subscriber.setPromotionStatus(PromotionStatus.values()[getRandomNumber(0,promotionStatusSize)]);
+            subscriber.setPromotionStatus(PromotionStatus.values()[getRandomNumber(0, promotionStatusSize)]);
             int typesSize = Type.values().length;
-            subscriber.setType(Type.values()[getRandomNumber(0,typesSize)]);
+            subscriber.setType(Type.values()[getRandomNumber(0, typesSize)]);
             subscriber.setContractId(df.getNumberText(5));
-            subscriber.setMsisdn("0"+msisdn);
+            subscriber.setMsisdn("0" + msisdn);
 
-            msisdn = Long.toString(Long.parseLong(msisdn)+1);
-            System.out.println(msisdn);
+            msisdn = Long.toString(Long.parseLong(msisdn) + 1);
+//            System.out.println(msisdn);
 
 
             SegmentSubscriber segmentSubscriber = new SegmentSubscriber();
             segmentSubscriber.setSubscriber(subscriber);
-            segmentSubscriber.setSegment(segments.get(getRandomNumber(0,segments.size())));
+            segmentSubscriber.setSegment(segments.get(getRandomNumber(0, segments.size())));
 
             segmentSubscriberRepository.save(segmentSubscriber);
+
         }
 
+        long stopTime = System.currentTimeMillis();
+        double elapsedTime = stopTime - startTime;
+        System.out.println("****" + elapsedTime/1000.0);
 
 //        while (true){}
     }

@@ -4,12 +4,15 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Data
 @Entity
 public class SegmentSubscriber {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = SEQUENCE, generator = "seqGen")
+    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1)
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subscriber_id")

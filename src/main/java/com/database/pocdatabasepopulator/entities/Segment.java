@@ -5,11 +5,15 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Data
 @Entity
 public class Segment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = SEQUENCE, generator = "seqGen")
+    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1)
     private Long id;
 
     private String name;
