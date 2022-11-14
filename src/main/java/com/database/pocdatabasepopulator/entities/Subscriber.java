@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,6 +23,13 @@ public class Subscriber {
     private String contractId;
 
     @OneToMany(mappedBy = "subscriber")
-    private List<SegmentSubscriber> segments;
+    private List<SegmentSubscriber> segments = new ArrayList<>();
+
+    public void addSegment(SegmentSubscriber segmentSubscriber){
+        segments.add(segmentSubscriber);
+    }
+
+    private void setSegments(List<SegmentSubscriber> segments){}
+    private List<SegmentSubscriber> getSegments(){return null;}
 
 }

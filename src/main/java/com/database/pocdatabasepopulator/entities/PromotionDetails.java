@@ -1,8 +1,6 @@
 package com.database.pocdatabasepopulator.entities;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -18,6 +16,7 @@ public class PromotionDetails {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     @CreationTimestamp
