@@ -1,8 +1,8 @@
 package com.database.pocdatabasepopulator.entities;
 
+import com.database.pocdatabasepopulator.enums.PromotionStatus;
+import com.database.pocdatabasepopulator.enums.Type;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,9 +17,11 @@ public class Subscriber {
 
     @Column(unique=true)
     private String msisdn;
-
     private String name;
-    private String promotionStatus;
+    @Enumerated(EnumType.STRING)
+    private PromotionStatus promotionStatus;
+    @Enumerated(EnumType.STRING)
+    private Type type;
     private String contractId;
 
     @OneToMany(mappedBy = "subscriber")

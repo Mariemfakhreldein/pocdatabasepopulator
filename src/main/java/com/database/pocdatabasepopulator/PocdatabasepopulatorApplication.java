@@ -4,9 +4,10 @@ import com.database.pocdatabasepopulator.entities.PromotionDetails;
 import com.database.pocdatabasepopulator.entities.Segment;
 import com.database.pocdatabasepopulator.entities.SegmentSubscriber;
 import com.database.pocdatabasepopulator.entities.Subscriber;
+import com.database.pocdatabasepopulator.enums.PromotionStatus;
+import com.database.pocdatabasepopulator.enums.Type;
 import com.database.pocdatabasepopulator.repositories.PromotionDetailsRepository;
 import com.database.pocdatabasepopulator.repositories.SegmentSubscriberRepository;
-import com.database.pocdatabasepopulator.repositories.SubscriberRepository;
 import org.fluttercode.datafactory.impl.DataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @SpringBootApplication
 public class PocdatabasepopulatorApplication implements CommandLineRunner {
@@ -28,7 +28,7 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
 
     DataFactory df = new DataFactory();
 
-    private int subscribersCount = 1000000;
+    private int subscribersCount = 100;
     public static void main(String[] args) {
         SpringApplication.run(PocdatabasepopulatorApplication.class, args);
     }
@@ -98,13 +98,18 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
         promotionDetailsRepository.save(promotionDetails3);
 
 
-        String msisdn = "12000000000";
+        String msisdn = "1200000000";
         //subscribers
         for(int i = 0; i < subscribersCount ; ++i){
 
             Subscriber subscriber = new Subscriber();
             subscriber.setName(df.getName());
-            subscriber.setMsisdn(msisdn);
+            int promotionStatusSize = PromotionStatus.values().length;
+            subscriber.setPromotionStatus(PromotionStatus.values()[getRandomNumber(0,promotionStatusSize)]);
+            int typesSize = Type.values().length;
+            subscriber.setType(Type.values()[getRandomNumber(0,typesSize)]);
+            subscriber.setContractId(df.getNumberText(5));
+            subscriber.setMsisdn("0"+msisdn);
 
             msisdn = Long.toString(Long.parseLong(msisdn)+1);
             System.out.println(msisdn);
@@ -112,7 +117,7 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
 
             SegmentSubscriber segmentSubscriber = new SegmentSubscriber();
             segmentSubscriber.setSubscriber(subscriber);
-            segmentSubscriber.setSegment(segments.get(getRandomNumber(0,segments.size()-1)));
+            segmentSubscriber.setSegment(segments.get(getRandomNumber(0,segments.size())));
 
             segmentSubscriberRepository.save(segmentSubscriber);
         }

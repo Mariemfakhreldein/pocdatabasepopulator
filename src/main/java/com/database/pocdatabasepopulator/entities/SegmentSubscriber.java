@@ -15,7 +15,7 @@ public class SegmentSubscriber {
     @JoinColumn(name = "subscriber_id")
     private Subscriber subscriber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "segment_id")
     private Segment segment;
 
