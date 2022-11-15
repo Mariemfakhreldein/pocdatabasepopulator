@@ -28,13 +28,13 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
 
     DataFactory df = new DataFactory();
 
-    private int subscribersCount = 1000000;
+    private int subscribersCount = 10000000;
     public static void main(String[] args) {
         SpringApplication.run(PocdatabasepopulatorApplication.class, args);
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public void run(String... args) throws Exception {
 
         List<Segment> segments  = new ArrayList<>();
@@ -47,19 +47,20 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
         Segment segment11 = new Segment();
         segment11.setName("SEGMENT11");
         promotionDetails1.addSegment(segment11);
-        segments.add(segment11);
+//        segments.add(segment11);
 
         Segment segment12 = new Segment();
         segment12.setName("SEGMENT12");
         promotionDetails1.addSegment(segment12);
-        segments.add(segment12);
+//        segments.add(segment12);
 
         Segment segment13 = new Segment();
         segment13.setName("SEGMENT13");
         promotionDetails1.addSegment(segment13);
-        segments.add(segment13);
+//        segments.add(segment13);
 
-        promotionDetailsRepository.save(promotionDetails1);
+        promotionDetails1 = promotionDetailsRepository.save(promotionDetails1);
+        segments.addAll(promotionDetails1.getSegments());
 
         //PROMO2
         PromotionDetails promotionDetails2 = new PromotionDetails();
@@ -68,14 +69,15 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
         Segment segment21 = new Segment();
         segment21.setName("SEGMENT21");
         promotionDetails2.addSegment(segment21);
-        segments.add(segment21);
+//        segments.add(segment21);
 
         Segment segment22 = new Segment();
         segment22.setName("SEGMENT22");
         promotionDetails2.addSegment(segment22);
-        segments.add(segment22);
+//        segments.add(segment22);
 
-        promotionDetailsRepository.save(promotionDetails2);
+        promotionDetails2 = promotionDetailsRepository.save(promotionDetails2);
+        segments.addAll(promotionDetails2.getSegments());
 
         //PROMO3
         PromotionDetails promotionDetails3 = new PromotionDetails();
@@ -84,22 +86,23 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
         Segment segment31 = new Segment();
         segment31.setName("SEGMENT31");
         promotionDetails3.addSegment(segment31);
-        segments.add(segment31);
+//        segments.add(segment31);
 
         Segment segment32 = new Segment();
         segment32.setName("SEGMENT32");
         promotionDetails3.addSegment(segment32);
-        segments.add(segment32);
+//        segments.add(segment32);
 
         Segment segment33 = new Segment();
         segment33.setName("SEGMENT33");
         promotionDetails3.addSegment(segment33);
-        segments.add(segment33);
+//        segments.add(segment33);
 
-        promotionDetailsRepository.saveAndFlush(promotionDetails3);
+        promotionDetails3 = promotionDetailsRepository.saveAndFlush(promotionDetails3);
+        segments.addAll(promotionDetails3.getSegments());
 
 
-
+        System.out.println("added promos and segments");
         String msisdn = "1200000000";
         List<SegmentSubscriber> segmentSubscribers = new ArrayList<>();
         //subscribers
@@ -122,8 +125,13 @@ public class PocdatabasepopulatorApplication implements CommandLineRunner {
             segmentSubscriber.setSubscriber(subscriber);
             segmentSubscriber.setSegment(segments.get(getRandomNumber(0, segments.size())));
 
-            segmentSubscriberRepository.save(segmentSubscriber);
+            segmentSubscribers.add(segmentSubscriber);
 
+            if(i%1000000 == 0){
+                segmentSubscriberRepository.saveAll(segmentSubscribers);
+//                segmentSubscriberRepository.flush();
+            segmentSubscribers.clear();
+            }
         }
 
         long stopTime = System.currentTimeMillis();
