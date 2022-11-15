@@ -15,7 +15,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 public class Subscriber {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "seqGen")
-    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1)
+    @SequenceGenerator(name = "seqGen", sequenceName = "seq", allocationSize = 100000)
     private Long id;
 
     @Column(unique=true)
@@ -26,15 +26,4 @@ public class Subscriber {
     @Enumerated(EnumType.STRING)
     private Type type;
     private String contractId;
-
-    @OneToMany(mappedBy = "subscriber")
-    private List<SegmentSubscriber> segments = new ArrayList<>();
-
-    public void addSegment(SegmentSubscriber segmentSubscriber){
-        segments.add(segmentSubscriber);
-    }
-
-    private void setSegments(List<SegmentSubscriber> segments){}
-    private List<SegmentSubscriber> getSegments(){return null;}
-
 }

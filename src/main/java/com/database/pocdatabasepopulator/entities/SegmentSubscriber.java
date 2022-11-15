@@ -12,7 +12,7 @@ public class SegmentSubscriber {
 
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "seqGen")
-    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1)
+    @SequenceGenerator(name = "seqGen", sequenceName = "seq", allocationSize = 100000)
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subscriber_id")
@@ -22,13 +22,8 @@ public class SegmentSubscriber {
     @JoinColumn(name = "segment_id")
     private Segment segment;
 
-    public void setSubscriber(Subscriber subscriber){
-        subscriber.addSegment(this);
+    public void setSubscriber(Subscriber subscriber) {
         this.subscriber = subscriber;
-    }
-    public void setSegment(Segment segment){
-        segment.addSubscriber(this);
-        this.segment = segment;
     }
 
 }

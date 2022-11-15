@@ -16,7 +16,7 @@ public class PromotionDetails {
 
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "seqGen")
-    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1)
+    @SequenceGenerator(name = "seqGen", sequenceName = "seq", allocationSize = 100000)
     private Long id;
 
     @Column(unique = true)
